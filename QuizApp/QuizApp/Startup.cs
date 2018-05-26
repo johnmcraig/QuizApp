@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using QuizApp.Data;
 using QuizApp.Models;
 using QuizApp.Services;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace QuizApp
 {
@@ -59,7 +61,11 @@ namespace QuizApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                RequestPath = "/lib",
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules/"))
+            });
 
             app.UseAuthentication();
 
